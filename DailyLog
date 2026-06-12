@@ -1,0 +1,386 @@
+
+
+"""
+
+function Journal
+1. New entry
+2. Edit old entry
+
+function Tasks
+1. Add
+2. Mark as completed
+3. View
+4. Delete
+
+Function Meal planner
+1. Add entry
+    Select for which date
+    Enter for breakfast/lunch/dinner
+2. View entries
+
+Function focus log:
+1. Add entry 
+    for which date?
+2. Edit entry   
+    for which date?
+3. View entries/ total focus time?
+
+
+
+"""
+from datetime import datetime
+
+def main():
+
+    with open("journal.txt", "a") as file:
+        pass
+
+    with open("tasks.txt", "a") as file:
+        pass
+
+    with open("focus_log.txt","a") as file:
+        pass
+
+    with open ("mood_tracker.txt","a") as file:
+        pass
+    
+    with open("meals.txt","a") as file:
+        pass    
+    
+    while True:
+        now = datetime.now()
+        d = now.strftime("%d/%m/%Y")
+        #print(d,":")
+        print(f"\nWelcome to your DailyLog! \n"+ d)
+        try:
+            x = int (input("\nPlease select: \n 1. Journal \n 2. Tasks \n 3. Meal Planner \n 4. Focus Log \n 5. Mood Tracker \n 6. Exit\n "))
+            if 1<= x <=6:
+                    
+                if x == 1:
+                    journal()
+                if x == 2:
+                    tasks()
+                if x == 3:
+                    meal_planner()
+                if x == 4:
+                    focus_log()
+                if x == 5:
+                    mood_tracker()
+                if x == 6:
+                    break
+            else:
+                print("Please enter a number between 1 and 6.\n")        
+        except ValueError:
+            print("Please enter a number.\n")                
+
+def journal():
+       
+    while True:
+        try:
+            y = int (input("1. New entry \n2. View entries \n3. Go back to main menu \n"))
+        except ValueError:
+            print("Please enter a number between 1 and 3.\n")
+            continue
+        if 1<= y <=3:
+            if y == 1:
+                now = datetime.now()
+                date_today = now.strftime("%d/%m/%Y")
+                now_time = now.strftime("%H:%M")
+                    
+                value_inp = input()
+                with open("journal.txt", "a") as file:
+                    file.write(f"{date_today}|{now_time}|{value_inp}\n")
+    
+            elif y == 2:
+                
+                
+                view_entry = input("Would you like to view all entries or single entry? ")
+                if view_entry.lower() == "all":
+                    with open("journal.txt", "r") as file:
+                        entries = file.readlines()
+                        if len(entries) == 0:
+                            print("No journal entries found.\n")
+                        else:
+                            for line in entries:
+                                parts = line.strip().split("|")
+                                print("-" * 40)
+                                print(f"Date: {parts[0]}")
+                                print(f"Time: {parts[1]}")
+                                print(f"Entry: {parts[2]}")
+                                print()
+                            
+                
+                elif view_entry.lower() == "single":
+                    search_type = input("Would you like to search by keyword or date? ")
+                    if search_type.lower() == "keyword":
+                        user_keyword = input("Please enter keyword: ")
+                        found = False
+                        with open("journal.txt", "r") as file:
+                            for line in file:
+                                if user_keyword.lower() in line.lower():
+                                    parts = line.strip().split("|")
+                                    print("-" * 40)
+                                    print(f"Date: {parts[0]}")
+                                    print(f"Time: {parts[1]}")
+                                    print(f"Entry: {parts[2]}")
+                                    print("-" * 40)
+                                    print()
+                                    found = True
+                        
+                        if not found:
+                            print ("Not in log")        
+                                        
+                                
+                    elif search_type.lower() == "date":
+                        user_date = input("Please enter date: ")
+                        found = False
+                        with open ("journal.txt", "r") as file:
+                            for line in file:
+                                if user_date in line:
+                                    parts = line.strip().split("|")
+                                    print("-" * 40)
+                                    print(f"Date: {parts[0]}")
+                                    print(f"Time: {parts[1]}")
+                                    print(f"Entry: {parts[2]}")
+                                    print("-" * 40)
+                                    print()
+                                    found = True
+                        if not found:
+                            print("Not in log")        
+                    else:
+                        print("Please enter keyword or date.\n")
+                else:
+                    print("Please enter all or single.\n")
+                    
+            elif y == 3:
+                return
+            
+
+        else:
+            print("Please enter a number between 1 and 3.\n")
+            continue
+
+
+def tasks():
+    
+    while True:
+        try:
+            x = int(input("Would you like to:\n 1. Add a task \n 2. View all tasks\n 3. Mark task as completed \n 4. Return to main menu\n"))
+        except ValueError:
+            print("Please enter a number between 1 and 4.\n")
+            continue
+        if 1<=x<=4:
+            if x == 1:
+                user_task = input("Please enter your task: ")
+                with open("tasks.txt","a") as file:
+                    file.write("TODO|" + user_task + "\n")
+                
+            elif x == 2:
+                
+                with open("tasks.txt","r") as file:
+                    entries = file.readlines()
+                    if len(entries) == 0:
+                            print("No tasks found.\n")
+                    count =1
+                    for line in entries:
+                        status, task = line.strip().split("|")
+                        print(f"{count}. [{status}]{task}")
+                        count += 1
+            elif x == 3:
+                count = 1
+                with open("tasks.txt","r") as file:
+                    for line in file:
+                        print(f"{count}.{line.strip()}")
+                        count += 1
+                try:
+                    task_number = int(input("Which task should be marked as completed?"))
+                except ValueError:
+                    print("Please enter a valid task number.\n")
+                    continue
+                
+                with open("tasks.txt","r") as file:
+                    tasks = file.readlines()
+                    if 1<= task_number <= len(tasks):
+                        tasks[task_number-1] = tasks[task_number-1].replace("TODO","DONE")
+                    else:
+                        print("Invalid task number.")
+                        continue
+                    #print(tasks)
+
+                with open("tasks.txt","w") as file:
+                    file.writelines(tasks)
+            elif x == 4:
+                return
+            
+            
+        else:
+            print("Please enter a number between 1 and 4.\n")
+
+def meal_planner():
+    while True:
+        try:    
+            user_option = int(input ("What would you like to do?\n 1. Add a meal plan \n 2. View meal plan \n 3. Return to main menu \n"))
+        
+        except ValueError:
+            print("Please enter a number between 1 and 3.\n")
+            continue
+        
+        if user_option == 1:
+            user_date = input("For which date would you like to add meal plan? ")
+            breakfast = input("What would like for breakfast? ")
+            lunch = input("What would you like for lunch? ")
+            dinner = input("What would you like for dinner? ")
+            with open ("meals.txt", "a") as file:
+                file.write(f"{user_date}|{breakfast}|{lunch}|{dinner}\n")
+            
+
+        elif user_option == 2:
+            with open ("meals.txt","r") as file:
+                entries = file.readlines()
+                if len(entries) == 0:
+                            print("No meal plans found.\n")
+                for line in entries:
+                    parts = line.strip().split("|")
+                    print("-" * 40)
+                    print(f"Date: {parts[0]}")
+                    print(f"Breakfast: {parts[1]}")
+                    print(f"Lunch: {parts[2]}")
+                    print(f"Dinner: {parts[3]}")
+                    print()
+                        
+        
+        elif user_option == 3:
+            return
+        else:
+            print ("Please enter a number between 1 and 3.\n")
+
+def focus_log():
+    
+    while True:
+        try:
+            user_option = int(input("Would you like to: \n1. Add a focus log \n2. View focus logs \n3. Show total focus time \n4. Return to main menu\n"))
+        except ValueError:
+            print("Please enter a number between 1 and 4.\n")
+            continue
+        if 1<= user_option <=4:
+                
+            if user_option == 1:
+                now = datetime.now()
+                date_today = now.strftime("%d/%m/%Y")
+                now_time = now.strftime("%H:%M")
+                user_activity = input("Please enter your log:\n Activity: ")
+                try:
+                    user_time = int(input("Time (in mins):"))
+                except ValueError:
+                    print("Please enter time in minutes as a number.\n")
+                    continue
+                with open("focus_log.txt", "a") as file:
+                    file.write(f"{date_today}|{now_time}|{user_activity}|{user_time}\n")
+
+            elif user_option == 2:
+                user_option2 = input("Would you like to view all logs or a single log? ")
+                if user_option2 == "all":
+                    with open("focus_log.txt","r") as file:
+                        entries = file.readlines()
+                        if len(entries) == 0:
+                            print("No logs found.\n")
+                        for line in entries:
+                            parts = line.strip().split("|")
+                            print("-" * 40)
+                            print(f"Date and time : {parts[0]} {parts[1]}")
+                            print(f"Activity: {parts[2]}")
+                            print(f"Time taken: {parts[3]}")
+                            print()
+
+                elif user_option2 == "single":
+                    
+                    user_option3 = input("Would you like to search by date or keyword? ")
+                    if user_option3 == "date":
+                        found = False
+                        user_Date = input("Please enter date: ")
+                        with open("focus_log.txt", "r")as file:
+                            for line in file:
+                                if user_Date in line:
+                                        print(line.strip())
+                                        found = True
+                        if not found:
+                                    print("Not in log\n")        
+                    elif user_option3 == "keyword":
+                        user_keyword = input("Please enter keyword: ")
+                        found = False
+                        with open ("focus_log.txt", "r")as file:
+                            for line in file:
+                                if user_keyword.lower() in line.lower():
+                                    print()
+                                    print(line.strip())
+                                    found = True
+                        if not found:
+                                    print ("Not in log.\n")            
+            
+            elif user_option == 3:
+                with open("focus_log.txt","r") as file:
+                    total = 0
+                    for line in file:
+                        parts = line.strip().split("|")
+                        total += int(parts[3])
+                    print(f"Total focus time: {total}\n")
+                        
+
+            elif user_option == 4:
+                return
+        else:
+            print("Please enter a number between 1 and 4.\n")
+
+def mood_tracker():
+    while True:
+        try:    
+            user_input = int(input("Would you like to:\n 1. Log mood \n 2. View Mood History Summary \n 3. Return to main menu\n"))
+        except ValueError:
+            print("Please enter a number between 1 and 3.\n")
+            continue
+        mood = ["Happy","Excited","Calm","Productive","Motivated","Tired","Stressed","Sad","Anxious","Angry"]
+        if 1<= user_input <=3:
+                
+            if user_input == 1:
+                try:
+                        
+                    user_mood = int(input("How are you feeling today? \n1. Happy \n2.Excited \n3.Calm \n4.Productive \n5.Motivated \n6.Tired \n7.Stressed \n8.Sad \n9.Anxious \n10.Angry\n"))
+                    if 1<= user_mood <= 10:
+                            
+                        selected_mood = mood[user_mood - 1]
+                        now = datetime.now()
+                        date_today = now.strftime("%d/%m/%Y")
+                        with open ("mood_tracker.txt","a") as file:
+                            file.write(f"{date_today}|{selected_mood}\n")
+                    else:
+                        print("Please choose a number between 1 and 10.\n")
+                        continue
+                except ValueError:
+                    print("Please enter a number.\n")
+                    continue
+
+            elif user_input == 2:
+                moods_dict = {}
+                with open ("mood_tracker.txt","r") as file:
+                    entries = file.readlines()
+                    if len(entries) == 0:
+                            print("No entries found.\n")
+                    for line in entries:
+                        parts = line.strip().split("|")
+                        if parts[1] not in moods_dict:
+                            moods_dict[parts[1]] = 1
+                        else:
+                            moods_dict[parts[1]] += 1
+                for mood,count in moods_dict.items():
+                    print(f"{mood}: {count} days\n")    
+            
+
+            
+            elif user_input == 3:
+                return
+        else:
+            print("Please enter a number between 1 and 3.\n")
+            continue    
+
+if __name__ == "__main__":
+    main()
