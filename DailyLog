@@ -1,33 +1,4 @@
 
-
-"""
-
-function Journal
-1. New entry
-2. Edit old entry
-
-function Tasks
-1. Add
-2. Mark as completed
-3. View
-4. Delete
-
-Function Meal planner
-1. Add entry
-    Select for which date
-    Enter for breakfast/lunch/dinner
-2. View entries
-
-Function focus log:
-1. Add entry 
-    for which date?
-2. Edit entry   
-    for which date?
-3. View entries/ total focus time?
-
-
-
-"""
 from datetime import datetime
 
 def main():
@@ -74,6 +45,13 @@ def main():
             print("Please enter a number.\n")                
 
 def journal():
+    """
+    Journal - here one can log daily entries, like a diary. 
+    Created this function to log user entries, view them (all/single - by searching using a keyword or date). 
+    Gives the user the option to go back to main menu as well. 
+    There are statements to verify whether user input is a number. 
+    I also used the .lower() method in the keyword search so that irrespective of the case the user enters the keyword in, the keyword can be searched and that particular entry can be shown.
+    """
        
     while True:
         try:
@@ -162,7 +140,9 @@ def journal():
 
 
 def tasks():
-    
+    """
+    Tasks - one can add tasks for the day, view them, and by end of the day, mark them done.
+    """
     while True:
         try:
             x = int(input("Would you like to:\n 1. Add a task \n 2. View all tasks\n 3. Mark task as completed \n 4. Return to main menu\n"))
@@ -217,6 +197,9 @@ def tasks():
             print("Please enter a number between 1 and 4.\n")
 
 def meal_planner():
+    """
+    Meal Planner - User can enter their mela plan for the day or the coming days. They can view them as well.
+    """
     while True:
         try:    
             user_option = int(input ("What would you like to do?\n 1. Add a meal plan \n 2. View meal plan \n 3. Return to main menu \n"))
@@ -256,6 +239,10 @@ def meal_planner():
 
 def focus_log():
     
+    """
+    Focus Log - for people who want to log how much time they spent learning/hobby/day-to-day activities.
+    They can view the logs and also see the total time they spent that day.
+    """ 
     while True:
         try:
             user_option = int(input("Would you like to: \n1. Add a focus log \n2. View focus logs \n3. Show total focus time \n4. Return to main menu\n"))
@@ -332,6 +319,10 @@ def focus_log():
             print("Please enter a number between 1 and 4.\n")
 
 def mood_tracker():
+    """
+    Mood Tracker - user can log the mood for the day. They can also view mood history and 
+    see how many days they were happy/anxious/excited and so on.
+    """
     while True:
         try:    
             user_input = int(input("Would you like to:\n 1. Log mood \n 2. View Mood History Summary \n 3. Return to main menu\n"))
